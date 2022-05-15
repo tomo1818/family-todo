@@ -3,7 +3,7 @@ import { TodoContainer } from '@/components/todo/TodoContainer'
 import { UserContext } from '@/context/UserContext'
 
 export default function Todo() {
-  const { user, group } = useContext(UserContext)
+  const { user, group, categories } = useContext(UserContext)
 
   return (
     <>

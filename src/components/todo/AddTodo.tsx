@@ -11,22 +11,31 @@ import Typography from '@mui/material/Typography'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
-import { doc, setDoc, collection } from 'firebase/firestore'
+import { doc, setDoc, collection, addDoc } from 'firebase/firestore'
 import Router from 'next/router'
 import { useState, useEffect, useContext } from 'react'
 import * as React from 'react'
-import { AuthContext } from '@/firebase/auth'
+import UUID from 'uuidjs'
+import { UserContext } from '@/context/UserContext'
 import { app, db } from '@/firebase/firebase'
+import { FamilyGroup } from '@/types/FamilyGroup'
+import { User } from '@/types/User'
+import { TodoCategory } from '@/types/TodoCategory'
 
 const theme = createTheme()
 
+type Props = {
+  user: User | undefined
+  group: FamilyGroup | undefined
+  category: TodoCategory | undefined
+}
+
 export default function AddTodo(props: any) {
-  const { currentUser } = useContext(AuthContext)
+  const { user, group, category }: Props = useContext(UserContext)
   const [title, setTitle] = useState<string>('')
   const [memo, setMemo] = useState<string>('')
   const [image, setImage] = useState()
 
-  const auth = getAuth(app)
   const createTodo = async () => {
     const data = {
       title: title,
@@ -34,6 +43,8 @@ export default function AddTodo(props: any) {
       image: image,
       isComplete: false,
     }
+    const todoCollectionRef = collection(db, 'familyGroup', user!.groupId, 'todoCategory', category!.id, 'todos')
+    const docRef = await addDoc(todoCollectionRef, data)
   }
 
   const handleSubmit = () => {
@@ -49,12 +60,6 @@ export default function AddTodo(props: any) {
   const handleChangeMemo = (e: any) => {
     setMemo(e.currentTarget.value)
   }
-
-  useEffect(() => {
-    if (!currentUser) {
-      Router.push('/')
-    }
-  }, [currentUser])
 
   return (
     <ThemeProvider theme={theme}>
@@ -93,7 +98,7 @@ export default function AddTodo(props: any) {
                   fullWidth
                   type='date'
                   id='date'
-                  name='日付'
+                  name='期限'
                   onChange={(event) => handleChangeImage(event)}
                 />
               </Grid>
@@ -102,9 +107,9 @@ export default function AddTodo(props: any) {
                   required
                   fullWidth
                   name='exampleUrl'
-                  label='参考URL'
+                  label='メモ'
                   id='exampleUrl'
-                  autoComplete='sample url'
+                  autoComplete='メモ'
                   onChange={(event) => handleChangeMemo(event)}
                 />
               </Grid>

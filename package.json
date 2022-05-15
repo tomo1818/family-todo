@@ -21,7 +21,8 @@
     "next": "12.1.6",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
-    "sass": "^1.51.0"
+    "sass": "^1.51.0",
+    "uuidjs": "^4.2.11"
   },
   "devDependencies": {
     "@types/node": "17.0.31",

@@ -18,10 +18,8 @@ export default function AddCategory(props: Props) {
   const { user, group } = props
 
   const addCategory = async () => {
-    console.log('addCategory')
     const familyGroupCollectionRef = collection(db, 'familyGroup', group!.id, 'todoCategory')
-    const docRef = await addDoc(familyGroupCollectionRef, { id: '', name: title, })
-    console.log(docRef.id)
+    const docRef = await addDoc(familyGroupCollectionRef, { id: '', name: title, todos: [] })
     await updateDoc(doc(db, 'familyGroup', group!.id, 'todoCategory', docRef.id), {
       id: docRef.id,
     })
