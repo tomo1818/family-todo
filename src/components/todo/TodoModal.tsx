@@ -2,7 +2,7 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Modal from '@mui/material/Modal'
 import * as React from 'react'
-import TodoInputForm from './TodoInputForm'
+import AddTodo from './AddTodo'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -24,7 +24,7 @@ export default function BasicModal() {
   return (
     <div>
       <Button variant='contained' onClick={handleOpen}>
-        Open modal
+        新規のTodoを作成
       </Button>
       <Modal
         open={open}
@@ -33,7 +33,7 @@ export default function BasicModal() {
         aria-describedby='modal-modal-description'
       >
         <Box sx={style}>
-          <TodoInputForm />
+          <AddTodo />
         </Box>
       </Modal>
     </div>

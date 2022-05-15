@@ -1,4 +1,5 @@
 import { getDoc, doc, collection } from '@firebase/firestore'
+import Container from '@mui/material/Container'
 import Router from 'next/router'
 import { useContext, useEffect, useState } from 'react'
 import AddCategory from './AddCategory'
@@ -15,16 +16,16 @@ type Props = {
 }
 
 export const TodoContainer = (props: Props) => {
-  const [category , setCategory] = useState<string>("")
+  const [category, setCategory] = useState<string>('')
   const [loading, setLoading] = useState(true)
   const { user, group } = props
 
   return (
-    <div>
+    <Container component='main' maxWidth='xs'>
       <h1>Todo Pageです</h1>
       <AddCategory user={user} group={group} />
       <TodoList user={user} category={category} />
       <TodoModal />
-    </div>
+    </Container>
   )
 }

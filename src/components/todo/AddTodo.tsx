@@ -20,7 +20,7 @@ import { app, db } from '@/firebase/firebase'
 
 const theme = createTheme()
 
-export default function SignUp(props: any) {
+export default function AddTodo(props: any) {
   const { currentUser } = useContext(AuthContext)
   const [title, setTitle] = useState<string>('')
   const [memo, setMemo] = useState<string>('')
@@ -62,7 +62,6 @@ export default function SignUp(props: any) {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -72,18 +71,18 @@ export default function SignUp(props: any) {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component='h1' variant='h5'>
-            Create Todo
+            Todo
           </Typography>
           <Box component='form' noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12}>
                 <TextField
                   autoComplete='given-name'
-                  name='userName'
+                  name='todoName'
                   required
                   fullWidth
-                  id='userName'
-                  label='User Name'
+                  id='todoName'
+                  label='Todoの名前'
                   autoFocus
                   onChange={(event) => handleChangeTitle(event)}
                 />
@@ -94,7 +93,7 @@ export default function SignUp(props: any) {
                   fullWidth
                   type='date'
                   id='date'
-                  name='date'
+                  name='日付'
                   onChange={(event) => handleChangeImage(event)}
                 />
               </Grid>
@@ -102,16 +101,16 @@ export default function SignUp(props: any) {
                 <TextField
                   required
                   fullWidth
-                  name='memo'
-                  label='Memo'
-                  id='memo'
+                  name='exampleUrl'
+                  label='参考URL'
+                  id='exampleUrl'
                   autoComplete='sample url'
                   onChange={(event) => handleChangeMemo(event)}
                 />
               </Grid>
             </Grid>
             <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
-              Sign Up
+              Todoを作成
             </Button>
             <Grid container justifyContent='flex-end'>
               <Grid item>

@@ -27,34 +27,21 @@ export default function AddCategory(props: Props) {
     })
   }
 
-  // const addUserInGroup = async (id: string, groupId: string) => {
-  //   const userDoc = doc(db, 'users', id)
-  //   const newFields = { groupId: groupId }
-  //   await updateDoc(userDoc, newFields)
-  // }
-
   const handleChangeTitle = (e: any) => {
     setTitle(e.target.value)
   }
 
-  // const handleSubmit = (e: any) => {
-  //   e.preventDefault()
-  //   createCategory()
-  // }
-
   return (
-    <Container component='main' maxWidth='xs'>
-      <Box>
-        <TextField
-          id='outlined-basic'
-          label='Outlined'
-          variant='outlined'
-          onChange={handleChangeTitle}
-        />
-        <Button onClick={addCategory} fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
-          Add Category
-        </Button>
-      </Box>
-    </Container>
+    <Box>
+      <TextField
+        id='outlined-basic'
+        label='Outlined'
+        variant='outlined'
+        onChange={handleChangeTitle}
+      />
+      <Button onClick={addCategory} fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
+        Add Category
+      </Button>
+    </Box>
   )
 }
