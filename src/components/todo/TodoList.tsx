@@ -1,6 +1,7 @@
 import { getDoc, doc, collection, getDocs } from '@firebase/firestore'
 import { useContext, useState, useEffect } from 'react'
 import Loading from '../common/Loading'
+import List from './List'
 import { UserContext } from '@/context/UserContext'
 import { db } from '@/firebase/firebase'
 
@@ -18,25 +19,24 @@ export default function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
-  const getTodos = async () => {
-    const todoCollectionRef = collection(
-      db,
-      'familyGroup',
-      user!.groupId,
-      'todoCategory',
-      category!.id,
-      'todos',
-    )
-    const todosData = await getDocs(todoCollectionRef)
-    let newTodos: Todo[] = []
-    todosData.docs.map(async (doc) => {
-      const todo = doc.data() as Todo
-      newTodos = [...newTodos, todo]
-    })
-    setTodos(newTodos)
-  }
-
   useEffect(() => {
+    const getTodos = async () => {
+      const todoCollectionRef = collection(
+        db,
+        'familyGroup',
+        user!.groupId,
+        'todoCategory',
+        category!.id,
+        'todos',
+      )
+      const todosData = await getDocs(todoCollectionRef)
+      let newTodos: Todo[] = []
+      todosData.docs.map(async (doc) => {
+        const todo = doc.data() as Todo
+        newTodos = [...newTodos, todo]
+      })
+      setTodos(newTodos)
+    }
     if (user && category) {
       getTodos()
       setLoading(false)
@@ -49,9 +49,9 @@ export default function TodoList() {
 
   return (
     <div>
-      {todos.map((todo) => {
-        <p>title: { todo.name }</p>
-      })}
+      <h2>Todoの一覧</h2>
+      {console.log(todos)}
+      <List todos={todos} />
     </div>
   )
 }

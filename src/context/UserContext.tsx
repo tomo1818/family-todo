@@ -19,6 +19,8 @@ interface IUserContext {
   setCategory: Dispatch<SetStateAction<TodoCategory | undefined>>
   categories: TodoCategory[]
   setCategories: Dispatch<SetStateAction<TodoCategory[]>>
+  todos: Todo[]
+  setTodos: Dispatch<SetStateAction<Todo[]>>
 }
 
 const UserContext = createContext<IUserContext>({
@@ -30,6 +32,8 @@ const UserContext = createContext<IUserContext>({
   setCategory: () => {},
   categories: [],
   setCategories: () => {},
+  todos: [],
+  setTodos: () => {}
 })
 
 const UserProvider = (props: any) => {
@@ -38,7 +42,7 @@ const UserProvider = (props: any) => {
   const [group, setGroup] = useState<FamilyGroup | undefined>()
   const [category, setCategory] = useState<TodoCategory | undefined>()
   const [categories, setCategories] = useState<TodoCategory[]>([])
-  const [todos, setTodos] = useState<Todo[] | undefined>()
+  const [todos, setTodos] = useState<Todo[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
   const getUserInfo = async (id: string) => {
@@ -69,6 +73,24 @@ const UserProvider = (props: any) => {
     })
   }
 
+  const getTodos = async () => {
+    const todoCollectionRef = collection(
+      db,
+      'familyGroup',
+      user!.groupId,
+      'todoCategory',
+      category!.id,
+      'todos',
+    )
+    const todosData = await getDocs(todoCollectionRef)
+    let newTodos: Todo[] = []
+    todosData.docs.map(async (doc) => {
+      const todo = doc.data() as Todo
+      newTodos = [...newTodos, todo]
+    })
+    setTodos(newTodos)
+  }
+
   useEffect(() => {
     if (!currentUser) {
       Router.push('/')
@@ -93,6 +115,8 @@ const UserProvider = (props: any) => {
         setCategory: setCategory,
         categories: categories,
         setCategories: setCategories,
+        todos: todos,
+        setTodos: setTodos,
       }}
     >
       {props.children}
