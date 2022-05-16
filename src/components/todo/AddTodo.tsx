@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
-import { doc, setDoc, collection, addDoc } from 'firebase/firestore'
+import { doc, updateDoc, collection, addDoc } from 'firebase/firestore'
 import Router from 'next/router'
 import { useState, useEffect, useContext } from 'react'
 import * as React from 'react'
@@ -30,21 +30,40 @@ type Props = {
   category: TodoCategory | undefined
 }
 
-export default function AddTodo(props: any) {
+type HandleClose = {
+  handleClose: () => void
+}
+
+export default function AddTodo(props: HandleClose) {
   const { user, group, category }: Props = useContext(UserContext)
+  const { handleClose } = props
   const [title, setTitle] = useState<string>('')
   const [memo, setMemo] = useState<string>('')
-  const [image, setImage] = useState()
+  const [date, setDate] = useState()
 
   const createTodo = async () => {
     const data = {
       title: title,
       memo: memo,
-      image: image,
+      date: date,
       isComplete: false,
     }
-    const todoCollectionRef = collection(db, 'familyGroup', user!.groupId, 'todoCategory', category!.id, 'todos')
+    const todoCollectionRef = collection(
+      db,
+      'familyGroup',
+      user!.groupId,
+      'todoCategory',
+      category!.id,
+      'todos',
+    )
     const docRef = await addDoc(todoCollectionRef, data)
+    await updateDoc(
+      doc(db, 'familyGroup', user!.groupId, 'todoCategory', category!.id, 'todos', docRef.id),
+      {
+        id: docRef.id,
+      },
+    )
+    handleClose()
   }
 
   const handleSubmit = () => {
@@ -54,8 +73,8 @@ export default function AddTodo(props: any) {
   const handleChangeTitle = (e: any) => {
     setTitle(e.currentTarget.value)
   }
-  const handleChangeImage = (e: any) => {
-    setImage(e.currentTarget.value)
+  const handleChangeDate = (e: any) => {
+    setDate(e.currentTarget.value)
   }
   const handleChangeMemo = (e: any) => {
     setMemo(e.currentTarget.value)
@@ -78,7 +97,7 @@ export default function AddTodo(props: any) {
           <Typography component='h1' variant='h5'>
             Todo
           </Typography>
-          <Box component='form' noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12}>
                 <TextField
@@ -99,7 +118,7 @@ export default function AddTodo(props: any) {
                   type='date'
                   id='date'
                   name='期限'
-                  onChange={(event) => handleChangeImage(event)}
+                  onChange={(event) => handleChangeDate(event)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -114,7 +133,7 @@ export default function AddTodo(props: any) {
                 />
               </Grid>
             </Grid>
-            <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
+            <Button fullWidth variant='contained' sx={{ mt: 3, mb: 2 }} onClick={handleSubmit}>
               Todoを作成
             </Button>
             <Grid container justifyContent='flex-end'>

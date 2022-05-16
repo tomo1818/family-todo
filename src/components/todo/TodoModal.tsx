@@ -33,7 +33,7 @@ export default function BasicModal() {
         aria-describedby='modal-modal-description'
       >
         <Box sx={style}>
-          <AddTodo />
+          <AddTodo handleClose={handleClose} />
         </Box>
       </Modal>
     </div>

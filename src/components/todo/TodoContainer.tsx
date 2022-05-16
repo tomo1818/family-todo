@@ -24,7 +24,7 @@ export const TodoContainer = (props: Props) => {
     <Container component='main' maxWidth='xs'>
       <h1>Todo Pageです</h1>
       <AddCategory user={user} group={group} />
-      <TodoList user={user} category={category} />
+      <TodoList />
       <TodoModal />
     </Container>
   )

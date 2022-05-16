@@ -8,6 +8,7 @@ import { db } from '@/firebase/firebase'
 import { FamilyGroup } from '@/types/FamilyGroup'
 import { User } from '@/types/User'
 import { TodoCategory } from '@/types/TodoCategory'
+import { Todo } from '@/types/Todo'
 
 interface IUserContext {
   user: User | undefined
@@ -37,6 +38,7 @@ const UserProvider = (props: any) => {
   const [group, setGroup] = useState<FamilyGroup | undefined>()
   const [category, setCategory] = useState<TodoCategory | undefined>()
   const [categories, setCategories] = useState<TodoCategory[]>([])
+  const [todos, setTodos] = useState<Todo[] | undefined>()
   const [loading, setLoading] = useState<boolean>(true)
 
   const getUserInfo = async (id: string) => {
